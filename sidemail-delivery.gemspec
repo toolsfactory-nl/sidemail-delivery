@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = Sidemail::Delivery::VERSION
   spec.authors = ["Frank Groeneveld"]
   spec.email = ["frank@toolsfactory.nl"]
-  spec.homepage = "https://github.com/toolsfactory-nl/sidemail_delivery"
+  spec.homepage = "https://github.com/toolsfactory-nl/sidemail-delivery"
   spec.summary = "Rails delivery method for Sidemail."
   spec.description = "A Rails delivery method that uses the Sidemail transactional API for sending outgoing mail."
   spec.license = "MIT"
