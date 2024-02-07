@@ -43,7 +43,9 @@ module Sidemail
         response = post_to_api(mail[:to].addrs.map(&:address), payload)
 
         JSON.parse(response.body).tap do |json|
-          raise Sidemail::Delivery::Exception.new(json["errorCode"]) if json.key?("errorCode")
+          break unless json.key?("errorCode")
+
+          raise Sidemail::Delivery::Exception.new("#{json["errorCode"]}: #{json["developerMessage"]}")
         end
       rescue JSON::ParserError
         raise Sidemail::Delivery::Exception.new("Unable to parse response")
