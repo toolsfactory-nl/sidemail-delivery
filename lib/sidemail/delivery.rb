@@ -27,21 +27,7 @@ module Sidemail
       end
 
       def deliver!(mail)
-        payload = {
-          fromName: mail[:from].addrs.first.display_name,
-          fromAddress: mail[:from].addrs.first.address,
-          html: mail.html_part.decoded,
-          text: mail.text_part.decoded,
-          subject: mail[:subject]
-        }
-        if mail.attachments.size.positive?
-          payload[:attachments] = mail.attachments.map do |attachment|
-            {name: attachment.filename, content: Base64.strict_encode64(attachment.body.decoded)}
-          end
-        end
-
-        response = post_to_api(mail[:to].addrs.map(&:address), payload)
-
+        response = post_to_api(mail[:to].addrs.map(&:address), payload(mail))
         JSON.parse(response.body).tap do |json|
           break unless json.key?("errorCode")
 
@@ -52,6 +38,41 @@ module Sidemail
       end
 
       protected
+
+      def payload(mail)
+        result = {
+          fromName: mail[:from].addrs.first.display_name,
+          fromAddress: mail[:from].addrs.first.address
+        }
+        result[:subject] = mail[:subject] if mail[:subject].present?
+        if mail[:template].present?
+          result[:templateName] = mail[:template]
+          result[:templateProps] = convert_template_props(mail[:template_props])
+        else
+          result[:html] = mail.html_part.decoded
+          result[:text] = mail.text_part.decoded
+        end
+        if mail.attachments.size.positive?
+          result[:attachments] = mail.attachments.map do |attachment|
+            {name: attachment.filename, content: Base64.strict_encode64(attachment.body.decoded)}
+          end
+        end
+        result
+      end
+
+      # converts all values that are not a string to a string for the Sidemail API
+      def convert_template_props(template_props)
+        template_props.unparsed_value.transform_values do |value|
+          case value
+          when String
+            value
+          when Float, Integer
+            value.to_s
+          else
+            value.to_json
+          end
+        end
+      end
 
       def post_to_api(addresses, payload)
         https = Net::HTTP.new(URL.host, URL.port)
