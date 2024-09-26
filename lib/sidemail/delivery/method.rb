@@ -30,7 +30,7 @@ module Sidemail
         result[:subject] = mail[:subject] if mail[:subject].present?
         if mail[:template].present?
           result[:templateName] = mail[:template]
-          result[:templateProps] = convert_template_props(mail[:template_props])
+          result[:templateProps] = mail[:template_props].unparsed_value
         else
           result[:html] = mail.html_part.decoded
           result[:text] = mail.text_part.decoded
@@ -41,20 +41,6 @@ module Sidemail
           end
         end
         result
-      end
-
-      # converts all values that are not a string to a string for the Sidemail API
-      def convert_template_props(template_props)
-        template_props.unparsed_value.transform_values do |value|
-          case value
-          when String
-            value
-          when Float, Integer
-            value.to_s
-          else
-            value.to_json
-          end
-        end
       end
 
       def post_to_api(addresses, payload)

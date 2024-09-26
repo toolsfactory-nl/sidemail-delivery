@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Removed
 
+## [0.2.1] - 2024-02-08
+### Fixed
+- Nested structures in template properties.
+
 ## [0.2.0] - 2024-02-08
 ### Added
 - Support for Sidemail templates and template properties.
