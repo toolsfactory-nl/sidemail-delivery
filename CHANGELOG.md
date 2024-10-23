@@ -11,7 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Removed
 
-## [0.2.1] - 2024-02-08
+## [0.2.2] - 2024-10-23
+### Fixed
+- Error on successful delivery of mail to multiple receivers.
+
+## [0.2.1] - 2024-09-26
 ### Fixed
 - Nested structures in template properties.
 
