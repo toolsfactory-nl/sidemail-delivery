@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Removed
 
+## [0.2.3] - 2025-02-28
+### Fixed
+- ActionMailer was loaded too early by this gem.
+
 ## [0.2.2] - 2024-10-23
 ### Fixed
 - Error on successful delivery of mail to multiple receivers.
