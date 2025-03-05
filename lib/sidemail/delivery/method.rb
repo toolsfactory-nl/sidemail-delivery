@@ -10,7 +10,8 @@ module Sidemail
       end
 
       def deliver!(mail)
-        response = post_to_api(mail[:to].addrs.map(&:address), payload(mail))
+        response = post_to_api(mail[:to].addrs.map(&:address) + mail[:cc]&.addrs.to_a.map(&:address) +
+          mail[:bcc]&.addrs.to_a.map(&:address), payload(mail))
         JSON.parse(response.body).tap do |json|
           break if json.is_a?(Array) # successful mail to multiple addresses
           break unless json.key?("errorCode")

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Removed
 
+## [0.2.3] - 2025-03-05
+### Added
+- Support for cc and bcc, they will receive separate emails.
+
 ## [0.2.3] - 2025-02-28
 ### Fixed
 - ActionMailer was loaded too early by this gem.
